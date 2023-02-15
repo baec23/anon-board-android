@@ -38,9 +38,6 @@ fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val username by viewModel.username.collectAsState()
-    val password by viewModel.password.collectAsState()
-    val isFormValid by viewModel.isFormValid.collectAsState()
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -52,21 +49,12 @@ fun LoginScreen(
                 onValueChange = { viewModel.onEvent(LoginUiEvent.UsernameChanged(it)) },
                 label = "Username"
             )
-            PasswordInputField(
-                value = password,
-                onValueChange = { viewModel.onEvent(LoginUiEvent.PasswordChanged(it)) },
-                label = "Password",
-                errorMessage = "Password must be at least 4 characters"
-            )
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                StatefulButton(text = "Login", state = if(isFormValid) ButtonState.Enabled else ButtonState.Disabled) {
+                StatefulButton(text = "Login") {
                     viewModel.onEvent(LoginUiEvent.LoginButtonPressed)
-                }
-                StatefulButton(text = "Sign Up") {
-                    viewModel.onEvent(LoginUiEvent.SignUpButtonPressed)
                 }
             }
         }
